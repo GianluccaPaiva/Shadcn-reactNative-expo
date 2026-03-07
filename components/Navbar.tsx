@@ -1,5 +1,10 @@
-import { LogOutIcon, Moon, Edit, Sun, User, Mail, Bell, AlertCircle } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import React from "react"
+import { View, Text, TouchableOpacity } from "react-native"
+import { useColorScheme } from "nativewind"
+import { Menu, User, Mail, Bell, AlertCircle, LogOutIcon, Edit, Sun, Moon } from "lucide-react-native"
+import { iconWithClassName } from "@/lib/iconWithClassName"
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,98 +15,136 @@ import {
     DropdownMenuGroup,
     DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "./ui/button"
-import { useTheme } from "./provedores/ThemeProvider"
-import { SidebarTrigger } from "./ui/sidebar"
-import React from "react"
+import { Button } from "@/components/ui/button"
+
+iconWithClassName(Menu);
+iconWithClassName(Sun);
+iconWithClassName(Moon);
+iconWithClassName(Bell);
+iconWithClassName(Mail);
+iconWithClassName(AlertCircle);
+iconWithClassName(User);
+iconWithClassName(Edit);
+iconWithClassName(LogOutIcon);
 
 export function Navbar() {
-    const { setTheme } = useTheme()
+    const { colorScheme, setColorScheme } = useColorScheme()
+
     const [notifications, setNotifications] = React.useState({
         email: true,
         alert: true,
     })
 
     return (
-        <nav className="barra-navegacao">
-            {/*Esquerda*/}
-            <SidebarTrigger />
-            {/*Direita*/}
-            <div className="conteiner-navegacao">
-                {/* Menu de Notificações */}
+        <View className="flex-row items-center justify-between px-2 py-4 bg-background border-b border-border mt-8">
+
+            {/* Esquerda: Menu e Título */}
+            <View className="flex-row items-center gap-2">
+                <TouchableOpacity className="p-2">
+                    <Menu className="text-foreground" size={24} />
+                </TouchableOpacity>
+                <Text className="text-lg font-bold text-foreground">
+                    NexusClass
+                </Text>
+            </View>
+
+            {/* Direita: Dropdowns */}
+            <View className="flex-row items-center gap-1">
+
+                {/* Notificações */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="icon" className="focus-visible:ring-0 focus-visible:ring-offset-0">
-                            <Bell />
+                        <Button variant="ghost" size="icon" className="h-9 w-9">
+                            <Bell className="text-foreground" size={20} />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-40" align="end">
+                    <DropdownMenuContent className="w-56" align="end">
                         <DropdownMenuGroup>
                             <DropdownMenuLabel>Tipos de Notificação</DropdownMenuLabel>
                             <DropdownMenuCheckboxItem
                                 checked={notifications.email}
-                                onCheckedChange={(checked) =>
-                                    setNotifications({ ...notifications, email: checked === true })
-                                }
+                                onCheckedChange={(checked) => setNotifications({ ...notifications, email: !!checked })}
                             >
-                                <Mail />
-                                Mensagens
+                                <View className="flex-row items-center">
+                                    <Mail className="text-foreground mr-2" size={16} />
+                                    <Text className="text-foreground">Mensagens</Text>
+                                </View>
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={notifications.alert}
-                                onCheckedChange={(checked) =>
-                                    setNotifications({ ...notifications, alert: checked === true })
-                                }
+                                onCheckedChange={(checked) => setNotifications({ ...notifications, alert: !!checked })}
                             >
-                                <AlertCircle />
-                                Alertas
+                                <View className="flex-row items-center">
+                                    <AlertCircle className="text-foreground mr-2" size={16} />
+                                    <Text className="text-foreground">Alertas</Text>
+                                </View>
                             </DropdownMenuCheckboxItem>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/*Tema do Site*/}
+                {/* Tema */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="icon" className="focus-visible:ring-0 focus-visible:ring-offset-0">
-                            <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                            <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-                            <span className="sr-only">Mudar tema</span>
+                        <Button variant="ghost" size="icon" className="h-9 w-9">
+                            {colorScheme === 'dark' ? (
+                                <Moon className="text-foreground" size={20} />
+                            ) : (
+                                <Sun className="text-foreground" size={20} />
+                            )}
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setTheme("light")}>
-                            Claro
+                    <DropdownMenuContent align="end" className="w-32">
+                        <DropdownMenuItem onPress={() => setColorScheme("light")}>
+                            <Text className="text-foreground">Claro</Text>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("dark")}>
-                            Escuro
+                        <DropdownMenuItem onPress={() => setColorScheme("dark")}>
+                            <Text className="text-foreground">Escuro</Text>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("system")}>
-                            Sistema
+                        <DropdownMenuItem onPress={() => setColorScheme("system")}>
+                            <Text className="text-foreground">Sistema</Text>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Menu Usuario*/}
+                {/* Perfil */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 focus-visible:ring-0 focus-visible:ring-offset-0" >
-                            <Avatar>
+                        <Button variant="ghost" className="h-9 w-9 rounded-full p-0 ml-1">
+                            <Avatar className="h-8 w-8" alt="User avatar">
                                 <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>Imagem Perfil</AvatarFallback>
+                                <AvatarFallback>
+                                    <Text>US</Text>
+                                </AvatarFallback>
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent sideOffset={10} align="end">
+                    <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem> <User className="icones-minha-conta" /> Perfil</DropdownMenuItem>
-                        <DropdownMenuItem> <Edit className="icones-minha-conta" /> Editar </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <View className="flex-row items-center">
+                                <User className="text-foreground mr-2" size={16} />
+                                <Text className="text-foreground">Perfil</Text>
+                            </View>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <View className="flex-row items-center">
+                                <Edit className="text-foreground mr-2" size={16} />
+                                <Text className="text-foreground">Editar</Text>
+                            </View>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem variant="destructive"> <LogOutIcon className="icones-minha-conta" /> Sair</DropdownMenuItem>
+                        <DropdownMenuItem variant="destructive">
+                            <View className="flex-row items-center">
+                                <LogOutIcon className="text-destructive mr-2" size={16} />
+                                <Text className="text-destructive font-medium">Sair</Text>
+                            </View>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            </div>
-        </nav >
+
+            </View>
+        </View>
     )
 }

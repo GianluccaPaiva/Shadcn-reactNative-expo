@@ -1,15 +1,28 @@
-import { Button } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
-import { LinearGradient } from 'expo-linear-gradient';
+import './global.css';
+import { View, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useColorScheme } from "nativewind";
+import { PortalHost } from '@rn-primitives/portal';
+
+import { Navbar } from "@/components/Navbar";
+
 export default function App() {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === 'dark';
+
   return (
-    <LinearGradient
-      colors={['#8B5CF6', '#EC4899']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      className="p-4 rounded-xl"
-    >
-      <Text className="text-white font-bold">Botão com Gradiente Nativo!</Text>
-    </LinearGradient>
-  );
+    <View className={`flex-1 bg-background ${isDark ? 'dark' : ''}`}>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+
+      <Navbar />
+
+      <View className="flex-1 items-center justify-center p-4">
+        <Text className="text-foreground text-center text-lg">
+          O Portal foi aberto! Teste os botões e o tema agora.
+        </Text>
+      </View>
+
+      <PortalHost />
+    </View>
+  )
 }
