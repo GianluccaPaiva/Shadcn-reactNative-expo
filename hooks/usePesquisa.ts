@@ -1,4 +1,4 @@
-import { listaEscolar } from "@/hooks/leituraJson"
+import { listaEscolar } from "hooks/leituraJson"
 import { useState, useMemo } from "react"
 
 type UsePesquisaProps = {

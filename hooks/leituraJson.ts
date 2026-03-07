@@ -1,4 +1,4 @@
-import turmasJson from "@/dados/turmas.json";
+import turmasJson from "dados/turmas.json";
 
 export type TurmaProps = {
   materia: string;
