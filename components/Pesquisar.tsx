@@ -92,6 +92,7 @@ export function Pesquisar(props: PesquisarProps) {
                                             clickMural={() => {
                                                 props.marcarMural(key)
                                                 mudarAberturaSheet(false)
+                                                props.navegarPara("mural")
                                             }}
                                         />
                                     ))}
