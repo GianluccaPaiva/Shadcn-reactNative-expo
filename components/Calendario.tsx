@@ -40,7 +40,7 @@ export function Calendario() {
             variant="outline"
             size="sm"
             className="flex-1 min-w-[100px]"
-            onClick={() => {
+            onPress={() => {
               const newDate = addDays(new Date(), preset.value)
               setDate(newDate)
               setCurrentMonth(
