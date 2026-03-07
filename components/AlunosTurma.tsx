@@ -77,7 +77,7 @@ export function AlunosTurma({ turma }: AlunosTurmaProps) {
                   <DropdownMenuSeparator />
 
                   <DropdownMenuItem variant="destructive">
-                    <AlertCircle size={16} color="#ef4444" />
+                    <AlertCircle size={16} color="#db2c87" />
                     <Text className="text-destructive">Denunciar</Text>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
