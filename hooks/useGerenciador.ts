@@ -6,7 +6,7 @@ export function useGerenciador() {
 
     const [usuario, setUsuario] = useState({
         inscricoes: {} as Record<string, boolean>,
-        acessouOq: "principal" as OpcoesTela,
+        acessouOq: "calendario" as OpcoesTela,
         chaveMural: "",
     });
 

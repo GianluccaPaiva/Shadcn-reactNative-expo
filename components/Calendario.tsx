@@ -5,14 +5,9 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Text } from "@/components/ui/text"
 import { addDays } from "date-fns"
 import { CALENDAR_THEME, MARKED_DATES_THEME } from "@/lib/calendarStyle"
-
+import {useCalendario} from "@/hooks/useCalendario"
 export function Calendario() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-  )
-
-  const selectedDateString = date?.toISOString().split("T")[0]
+  const { dataString, currentMonth, setCurrentMonth, setDate } = useCalendario()
 
   return (
       <Card 
@@ -21,7 +16,7 @@ export function Calendario() {
         <Calendar
           theme={CALENDAR_THEME}
           markedDates={{
-            [selectedDateString || '']: {
+            [dataString || '']: {
               ...MARKED_DATES_THEME
             }
           }}

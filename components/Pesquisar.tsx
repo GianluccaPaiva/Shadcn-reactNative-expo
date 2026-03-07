@@ -2,7 +2,6 @@ import { Text } from "@/components/ui/text"
 import { TurmaCard } from "./TurmaCard"
 import { usePesquisa } from "@/hooks/usePesquisa"
 import { Modal, Pressable, ScrollView, View, TextInput, TouchableOpacity } from "react-native"
-import { useEffect, useRef } from "react"
 import { X } from "lucide-react-native"
 import { iconWithClassName } from "@/lib/iconWithClassName"
 
@@ -16,19 +15,9 @@ type PesquisarProps = {
 }
 
 export function Pesquisar(props: PesquisarProps) {
-    const { textoPesquisa, setTextoPesquisa, aberto, mudarAberturaSheet, turmasFiltradas } = usePesquisa({
+    const { textoPesquisa, setTextoPesquisa, aberto, mudarAberturaSheet, turmasFiltradas, inputRef } = usePesquisa({
         aoFecharPesquisa: props.voltarPrincipal
     })
-    const inputRef = useRef<TextInput>(null)
-
-    useEffect(() => {
-        if (aberto) {
-            const timer = setTimeout(() => {
-                inputRef.current?.focus()
-            }, 300)
-            return () => clearTimeout(timer)
-        }
-    }, [aberto])
 
     return (
         // Sistema de pesquisa que da efeito de baixo para cima de pesquisa
