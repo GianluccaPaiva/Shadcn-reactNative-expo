@@ -2,8 +2,7 @@ import React from "react"
 import { View, Text, TouchableOpacity } from "react-native"
 import { useColorScheme } from "nativewind"
 import { Menu, User, Mail, Bell, AlertCircle, LogOutIcon, Edit, Sun, Moon } from "lucide-react-native"
-import { iconWithClassName } from "@/lib/iconWithClassName"
-
+import { iconListWithClassName } from "@/lib/iconWithClassName"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     DropdownMenu,
@@ -17,19 +16,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 
-iconWithClassName(Menu);
-iconWithClassName(Sun);
-iconWithClassName(Moon);
-iconWithClassName(Bell);
-iconWithClassName(Mail);
-iconWithClassName(AlertCircle);
-iconWithClassName(User);
-iconWithClassName(Edit);
-iconWithClassName(LogOutIcon);
+const icons = [Menu, User, Mail, Bell, AlertCircle, LogOutIcon, Edit, Sun, Moon];
+iconListWithClassName(icons);
 
-export function Navbar() {
+type NavbarProps = {
+    onAbrirMenu: () => void;
+}
+
+export function Navbar({ onAbrirMenu }: NavbarProps) {
     const { colorScheme, setColorScheme } = useColorScheme()
-
     const [notifications, setNotifications] = React.useState({
         email: true,
         alert: true,
@@ -40,7 +35,7 @@ export function Navbar() {
 
             {/* Esquerda: Menu e Título */}
             <View className="flex-row items-center gap-2">
-                <TouchableOpacity className="p-2">
+                <TouchableOpacity className="p-2" onPress={onAbrirMenu}>
                     <Menu className="text-foreground" size={24} />
                 </TouchableOpacity>
                 <Text className="text-lg font-bold text-foreground">

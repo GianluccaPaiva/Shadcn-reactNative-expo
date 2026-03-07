@@ -1,33 +1,21 @@
-import { Home, Inbox, Calendar, Search, ChevronDown } from "lucide-react"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from "./ui/sidebar"
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@radix-ui/react-collapsible"
+import React, { useState } from "react"
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native"
+import { Home, Inbox, Calendar, Search, ChevronDown, ChevronUp } from "lucide-react-native"
+import { iconListWithClassName } from "@/lib/iconWithClassName"
 import { Configuracoes } from "./Configuracoes"
 import type { OpcoesTela } from "@/hooks/useGerenciador"
 import { listaEscolar } from "@/hooks/leituraJson"
 import { getCorMateria } from "@/lib/utils"
 
 const items = [
-    {
-        title: "Inicio",
-        url: "/",
-        icon: Home,
-    },
-    {
-        title: "Pesquisar",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Mensagens",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendario",
-        url: "#",
-        icon: Calendar,
-    },
+    { title: "Inicio", icon: Home, action: "principal" },
+    { title: "Pesquisar", icon: Search, action: "pesquisar" },
+    { title: "Mensagens", icon: Inbox, action: "mensagens" },
+    { title: "Calendario", icon: Calendar, action: "calendario" },
 ]
+
+const icons = [Home, Inbox, Calendar, Search, ChevronDown, ChevronUp];
+iconListWithClassName(icons);
 
 type AppSidebarProps = {
     navegarPara: (tela: OpcoesTela) => void;
@@ -36,130 +24,112 @@ type AppSidebarProps = {
 }
 
 export function AppSidebar({ navegarPara, inscricoes, marcarMural }: AppSidebarProps) {
+    const [aulasAbertas, setAulasAbertas] = useState(false);
+
     return (
-        <Sidebar collapsible="icon">
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                            <a href="/">
-                                <img src="Logos/Logo.png" alt="Logo da Escola Nexus" width={22} height={22} />
-                                <span className="text-gradient text-lg tracking-tight">NexusClass</span>
-                            </a>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
+        <View className="flex-1 w-64 bg-background border-r border-border">
+            {/* Header */}
+            <View className="p-4 border-b border-border">
+                <TouchableOpacity
+                    className="flex-row items-center gap-2"
+                    onPress={() => navegarPara("principal")}
+                >
+                    <Image
+                        source={require('../assets/Logos/Logo.png')}
+                        style={{ width: 22, height: 22 }}
+                    />
+                    <Text className="text-lg font-bold text-foreground">NexusClass</Text>
+                </TouchableOpacity>
+            </View>
 
-            <SidebarSeparator className="mx-0 w-full" />
+            <ScrollView className="flex-1">
+                {/* Menu Principal */}
+                <View className="p-4">
+                    <Text className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
+                        Menu Principal
+                    </Text>
+                    <View className="gap-1">
+                        {items.map((item) => (
+                            <TouchableOpacity
+                                key={item.title}
+                                className="flex-row items-center py-2 px-3 rounded-md active:bg-secondary/50"
+                                onPress={() => navegarPara(item.action as OpcoesTela)}
+                            >
+                                <item.icon size={20} className="text-foreground" />
+                                <Text className="ml-3 text-base text-foreground flex-1">
+                                    {item.title}
+                                </Text>
 
-            <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
-                    <SidebarContent>
-                        <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a
-                                            href={item.url}
-                                            onClick={(e) => {
-                                                if (item.title === "Inicio") {
-                                                    e.preventDefault();
-                                                    navegarPara("principal");
-                                                }
-                                                if (item.title === "Calendario") {
-                                                    e.preventDefault();
-                                                    navegarPara("calendario");
-                                                }
-                                                if (item.title === "Pesquisar") {
-                                                    e.preventDefault();
-                                                    navegarPara("pesquisar");
-                                                }
-                                                if (item.title === "Mensagens") {
-                                                    e.preventDefault();
-                                                    navegarPara("mensagens");
-                                                }
-                                                if (item.title === "Suporte") {
-                                                    e.preventDefault();
-                                                    navegarPara("suporte");
-                                                }
-                                                {/*Os outros botões aqui*/ }
-                                            }}
-                                        >
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                    {item.title === "Mensagens" && (
-                                        <SidebarMenuBadge>0</SidebarMenuBadge>
-                                    )}
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarContent>
-                </SidebarGroup>
+                                {item.title === "Mensagens" && (
+                                    <View className="bg-primary rounded-full px-2 py-0.5">
+                                        <Text className="text-primary-foreground text-xs font-bold">0</Text>
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </View>
 
-                <SidebarSeparator className="mx-0 w-full" />
+                <View className="h-[1px] w-full bg-border my-2" />
 
-                <Collapsible defaultOpen={false} className="group/collapsible">
-                    <SidebarGroup>
-                        <SidebarGroupLabel asChild>
-                            <CollapsibleTrigger>
-                                Minhas Aulas
-                                <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                            </CollapsibleTrigger>
-                        </SidebarGroupLabel>
-                        <CollapsibleContent>
-                            <SidebarContent>
-                                <SidebarMenu>
-                                    {/*Materias selecionadas*/}
-                                    <SidebarMenu>
-                                        {Object.entries(inscricoes).filter(([_, inscrito]) => inscrito).length === 0 ? (
-                                            <div className="px-4 py-2 text-sm text-muted-foreground">
-                                                Nenhuma aula inscrita
-                                            </div>
-                                        ) : (
-                                            Object.entries(inscricoes)
-                                                .filter(([_, inscrito]) => inscrito)
-                                                .map(([key, _]) => {
+                {/* Minhas Aulas*/}
+                <View className="p-4">
+                    <TouchableOpacity
+                        className="flex-row items-center justify-between py-2 px-1"
+                        onPress={() => setAulasAbertas(!aulasAbertas)}
+                    >
+                        <Text className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Minhas Aulas
+                        </Text>
+                        {aulasAbertas ? (
+                            <ChevronUp size={16} className="text-muted-foreground" />
+                        ) : (
+                            <ChevronDown size={16} className="text-muted-foreground" />
+                        )}
+                    </TouchableOpacity>
 
-                                                    const turma = listaEscolar.turmas[key];
-                                                    if (!turma) return null;
+                    {aulasAbertas && (
+                        <View className="mt-2 pl-2 gap-1">
+                            {Object.entries(inscricoes).filter(([_, inscrito]) => inscrito).length === 0 ? (
+                                <Text className="text-sm text-muted-foreground px-2 py-1">
+                                    Nenhuma aula inscrita
+                                </Text>
+                            ) : (
+                                Object.entries(inscricoes)
+                                    .filter(([_, inscrito]) => inscrito)
+                                    .map(([key, _]) => {
+                                        const turma = listaEscolar.turmas[key];
+                                        if (!turma) return null;
 
-                                                    return (
-                                                        <SidebarMenuItem key={key}>
-                                                            <SidebarMenuButton
-                                                                onClick={() => marcarMural(key)}
-                                                                className="cursor-pointer h-9 px-2 rounded-md hover:bg-secondary data-[state=open]:bg-secondary"
-                                                            >
-                                                                <div className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full ${getCorMateria(turma.materia)}`}>
-                                                                    {turma.materia.charAt(0).toUpperCase()}
-                                                                </div>
+                                        return (
+                                            <TouchableOpacity
+                                                key={key}
+                                                onPress={() => marcarMural(key)}
+                                                className="flex-row items-center py-2 px-2 rounded-md active:bg-secondary/50"
+                                            >
+                                                <View className={`h-5 w-5 rounded-full items-center justify-center ${getCorMateria(turma.materia)}`}>
+                                                    <Text className="text-[10px] font-bold text-white">
+                                                        {turma.materia.charAt(0).toUpperCase()}
+                                                    </Text>
+                                                </View>
+                                                <Text className="ml-3 text-sm text-foreground" numberOfLines={1}>
+                                                    {turma.materia} - {turma.turma}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        );
+                                    })
+                            )}
+                        </View>
+                    )}
+                </View>
+            </ScrollView>
 
-                                                                <span className="truncate">{turma.materia} - {turma.turma}</span>
-                                                            </SidebarMenuButton>
-                                                        </SidebarMenuItem>
-                                                    );
-                                                })
-                                        )}
-                                    </SidebarMenu>
-                                </SidebarMenu>
-                            </SidebarContent>
-                        </CollapsibleContent>
-                    </SidebarGroup>
-                </Collapsible>
-            </SidebarContent>
+            <View className="h-[1px] w-full bg-border" />
 
-            <SidebarSeparator className="mx-0 w-full" />
-
-            <SidebarFooter>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <Configuracoes navegarPara={navegarPara} />
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarFooter>
-        </Sidebar>
+            {/* Footer */}
+            <View className="p-4">
+                <Configuracoes navegarPara={navegarPara} /> {/*Tiver q mogar a funcionalidade do tigreso*/}
+            </View>
+        </View>
     )
 }

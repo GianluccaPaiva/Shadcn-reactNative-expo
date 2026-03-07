@@ -1,15 +1,15 @@
 import { useState } from "react"
-import { getAssetPath } from "@/lib/assetPath"
+/*import { getAssetPath } from "@/lib/assetPath"*/
 
 export function useConfiguracoes() {
-    const[notificacoes, setNotificacoes] = useState(false)
-    const[contagemSuporte, setContagemSuporte] = useState(0)
-    
+    const [notificacoes, setNotificacoes] = useState(false)
+    const [contagemSuporte, setContagemSuporte] = useState(0)
+
     const clickarNotificacoes = () => {
         setNotificacoes(!notificacoes)
     }
-    
-    const clicarSuporte = () => {
+
+    /*const clicarSuporte = () => {
         const novaContagem = contagemSuporte + 1
         setContagemSuporte(novaContagem)
 
@@ -54,7 +54,7 @@ export function useConfiguracoes() {
     
     const resetarContador = () => {
         setContagemSuporte(0)
-    }
-    
-    return {notificacoes, clickarNotificacoes, contagemSuporte, clicarSuporte, resetarContador}
+    }*/
+
+    return { notificacoes, clickarNotificacoes }
 }

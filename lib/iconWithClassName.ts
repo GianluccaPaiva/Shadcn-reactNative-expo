@@ -12,3 +12,9 @@ export function iconWithClassName(icon: LucideIcon) {
         },
     });
 }
+
+export function iconListWithClassName(iconList: LucideIcon[]) {
+    for (const icon of iconList) {
+        iconWithClassName(icon);
+    }
+}
