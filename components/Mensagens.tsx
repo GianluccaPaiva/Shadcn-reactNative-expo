@@ -1,19 +1,28 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Text } from "@/components/ui/text"
+import { Image, View } from "react-native"
 
 export function Mensagens() {
     return (
-        <div className="w-full h-full flex items-center justify-center">
+        <View className="w-full h-full items-center justify-center">
             <Card>
                 <CardHeader>
                     <CardTitle>Mensagens dos professores para você</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Ícone de mensagens" className="w-16 h-16 mx-auto mb-4" />
-                    <p className="text-center text-gray-500">Nenhuma mensagem disponível no momento. Aguarde que logo logo o professor irá responder.</p>
+                    <Image
+                        source={{ uri: "https://cdn-icons-png.flaticon.com/512/561/561127.png" }}
+                        accessibilityLabel="Icone de mensagens"
+                        className="mx-auto mb-4 h-16 w-16"
+                        resizeMode="contain"
+                    />
+                    <Text className="text-center text-muted-foreground">
+                        Nenhuma mensagem disponivel no momento. Aguarde que logo logo o professor ira responder.
+                    </Text>
                 </CardContent>
             </Card>
-        </div>
+        </View>
     )
     
 }

@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { ButtonGroup, ButtonGroupSeparator } from "./ui/button-group";
+import { Text } from "@/components/ui/text"
+import { Image, View } from "react-native"
 
 type TurmasProps = {
   materia: string;
@@ -24,48 +24,48 @@ type TurmasProps = {
 
 export function TurmaCard({ materia, professor, banners, fotoProfessor, sala, turma, inscrito = false, compacto = false, clickMural, clickInscrito }: TurmasProps) {
   return (
-    <Card className={`relative mx-auto w-full pt-0 overflow-hidden ${compacto ? '' : 'max-w-sm'}`}>
-      <div className={`absolute inset-0 z-30 bg-black/35 ${compacto ? 'h-24' : 'aspect-video'}`} />
+    <Card className={`mx-auto w-full overflow-hidden pt-0 ${compacto ? "" : "max-w-sm"}`}>
+      <View className="relative">
+        <Image
+          source={{ uri: banners }}
+          accessibilityLabel={`Banner da turma ${materia}`}
+          className={`${compacto ? "h-24" : "h-44"} w-full`}
+          resizeMode="cover"
+        />
+        <View className="absolute inset-0 bg-black/35" />
+      </View>
 
-      <img
-        src={banners}
-        alt="Banner da turma"
-        className={`relative z-20 w-full object-cover brightness-70 ${compacto ? 'h-24' : 'aspect-video'}`}
-      />
+      <CardHeader className={compacto ? "p-4 pb-1" : ""}>
+        <Image
+          source={{ uri: fotoProfessor }}
+          accessibilityLabel={`Foto do professor ${professor}`}
+          className={`${compacto ? "h-10 w-10" : "h-14 w-14"} rounded-full border-2 border-background`}
+          resizeMode="cover"
+        />
 
-      <CardHeader className={compacto ? "p-4 pb-1 pt-0" : ""}>
-        <CardAction className="relative z-40 h-11 w-11">
-          <img
-            src={fotoProfessor}
-            alt="Foto do professor"
-            className={`rounded-full object-cover border-2 border-background shadow-sm ${compacto ? 'h-10 w-10' : 'h-14 w-14'}`}
-          />
-        </CardAction>
+        <CardTitle className={compacto ? "mt-1 text-lg" : ""}>{materia}</CardTitle>
 
-        <CardTitle className={compacto ? "text-lg mt-1" : ""}>{materia}</CardTitle>
-
-        <CardDescription className={compacto ? "text-xs " : ""}>
-          {compacto ? `Prof: ${professor} | Sala: ${sala}` : `Professor: ${professor} | Sala: ${sala} | Turma: ${turma}`}
+        <CardDescription className={compacto ? "text-xs" : ""}>
+          {compacto
+            ? `Prof: ${professor} | Sala: ${sala}`
+            : `Professor: ${professor} | Sala: ${sala} | Turma: ${turma}`}
         </CardDescription>
       </CardHeader>
 
       <CardFooter className={compacto ? "p-4 pb-1 pt-0" : ""}>
         {inscrito ? (
-          <ButtonGroup>
-            <Button onClick={() => clickInscrito?.()} variant={"destructive"} size="sm">
-              {compacto ? "Sair" : "Cancelar Inscrição"}
+          <View className="w-full flex-row gap-2">
+            <Button onPress={() => clickInscrito?.()} variant="destructive" size="sm" className="flex-1">
+              <Text>{compacto ? "Sair" : "Cancelar Inscricao"}</Text>
             </Button>
-            <ButtonGroupSeparator />
-            <Button onClick={() => clickMural?.(materia)} size="sm">
-              Entrar
+            <Button onPress={() => clickMural?.(materia)} size="sm" className="flex-1">
+              <Text>Entrar</Text>
             </Button>
-          </ButtonGroup>
+          </View>
         ) : (
-          <ButtonGroup className={compacto ? "w-full" : ""}>
-            <Button onClick={() => clickInscrito?.()} size="sm" className="w-full">
-              Inscrever-se
-            </Button>
-          </ButtonGroup>
+          <Button onPress={() => clickInscrito?.()} size="sm" className="w-full">
+            <Text>Inscrever-se</Text>
+          </Button>
         )}
       </CardFooter>
     </Card>

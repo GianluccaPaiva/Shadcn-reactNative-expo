@@ -2,10 +2,9 @@ import { listaEscolar } from "@/hooks/leituraJson";
 import { TurmaCard } from "./TurmaCard";
 import { Mural } from "./Mural";
 import { Calendario } from "./Calendario";
-import { Pesquisar } from "./Pesquisar";
 import { Mensagens } from "./Mensagens";
 import type { OpcoesTela } from "@/hooks/useGerenciador";
-import { TigresoEXE } from "./TigresoEXE";
+import { View, ScrollView } from "react-native";
 
 type GerenciadorTelasProps = {
     usuario: any;
@@ -19,49 +18,50 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
     const turmaSelecionada = listaEscolar.turmas[props.usuario.chaveMural];
 
     return (
-        <>
-            {(props.usuario.acessouOq === "principal" || props.usuario.acessouOq === "pesquisar") && (
-                <div className="display grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {listaEscolar.turmas && Object.entries(listaEscolar.turmas).map(([key, turma]) => (
-                        <TurmaCard
-                            key={key}
-                            materia={turma.materia}
-                            banners={turma.banners}
-                            professor={turma.professor}
-                            fotoProfessor={turma.foto_professor}
-                            sala={turma.sala}
-                            turma={turma.turma}
-                            inscrito={props.estaInscrito(key)}
-                            clickInscrito={() => props.mudarInscricao(key)}
-                            clickMural={() => props.marcarMural(key)}
-                        />
-                    ))}
-                </div>
+        <View className="flex-1">
+            {props.usuario.acessouOq === "principal" && (
+                <ScrollView className="flex-1">
+                    <View className="flex-row flex-wrap justify-between p-4">
+                        {listaEscolar.turmas && Object.entries(listaEscolar.turmas).map(([key, turma]) => (
+                            <View key={key} className="w-1/2 px-2 mb-4">
+                                <TurmaCard
+                                    materia={turma.materia}
+                                    banners={turma.banners}
+                                    professor={turma.professor}
+                                    fotoProfessor={turma.foto_professor}
+                                    sala={turma.sala}
+                                    turma={turma.turma}
+                                    inscrito={props.estaInscrito(key)}
+                                    clickInscrito={() => props.mudarInscricao(key)}
+                                    clickMural={() => props.marcarMural(key)}
+                                    compacto
+                                />
+                            </View>
+                        ))}
+                    </View>
+                </ScrollView>
             )}
             {props.usuario.acessouOq === "mural" && (
-                <div>
+                <View>
                     {turmaSelecionada && <Mural materia={props.usuario.chaveMural} turma={turmaSelecionada} />}
-                </div>
+                </View>
             )}
             {props.usuario.acessouOq === "calendario" &&
-                <div className="w-full flex items-center justify-center p-4">
+                <View className="w-full flex items-center justify-center p-4">
                     <Calendario />
-                </div>}
+                </View>}
 
             {props.usuario.acessouOq === "pesquisar" &&
-                <div className="w-full flex items-center justify-center p-4">
-                    <Pesquisar mudarInscricao={props.mudarInscricao} estaInscrito={props.estaInscrito} marcarMural={props.marcarMural} voltarPrincipal={() => props.navegarPara("principal")} />
-                </div>}
+                <View className="w-full flex items-center justify-center p-4">
+                </View>}
             {props.usuario.acessouOq === "mensagens" &&
-                <div className="w-full flex items-center justify-center p-4">
+                <View className="w-full flex items-center justify-center p-4">
                     <Mensagens />
-                </div>}
+                </View>}
             {props.usuario.acessouOq === "suporte" &&
-                <div className="w-full flex items-center justify-center p-4">
-                    <div>
-                        <TigresoEXE navegarPara={props.navegarPara} />
-                    </div>
-                </div>}
-        </>
+                <View className="w-full flex items-center justify-center p-4">
+                    <View />
+                </View>}
+        </View>
     )
 }
