@@ -60,6 +60,7 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
                         estaInscrito={props.estaInscrito}
                         mudarInscricao={props.mudarInscricao}
                         marcarMural={props.marcarMural}
+                        navegarPara={(tela) => props.navegarPara(tela)}
                         voltarPrincipal={() => props.navegarPara("principal")}
                     />
                 </View>

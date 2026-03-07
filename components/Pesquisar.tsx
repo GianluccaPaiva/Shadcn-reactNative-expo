@@ -4,6 +4,7 @@ import { usePesquisa } from "@/hooks/usePesquisa"
 import { Modal, Pressable, ScrollView, View, TextInput, TouchableOpacity } from "react-native"
 import { X } from "lucide-react-native"
 import { iconWithClassName } from "@/lib/iconWithClassName"
+import { OpcoesTela } from "@/hooks/useGerenciador"
 
 iconWithClassName(X)
 
@@ -11,6 +12,7 @@ type PesquisarProps = {
     mudarInscricao: (materia: string) => void
     estaInscrito: (materia: string) => boolean
     marcarMural: (key: string) => void
+    navegarPara: (tela: OpcoesTela) => void
     voltarPrincipal: () => void
 }
 
@@ -20,14 +22,13 @@ export function Pesquisar(props: PesquisarProps) {
     })
 
     return (
-        // Sistema de pesquisa que da efeito de baixo para cima de pesquisa
         <Modal
             visible={aberto}
             transparent
             animationType="slide"
             onRequestClose={() => mudarAberturaSheet(false)}
-        >   
-        {/* efeito de baixo para cima*/}
+        >
+            {/* efeito de baixo para cima*/}
             <View className="flex-1 justify-end">
                 <Pressable
                     className="flex-1 bg-black/50"
@@ -88,6 +89,7 @@ export function Pesquisar(props: PesquisarProps) {
                                             clickMural={() => {
                                                 props.marcarMural(key)
                                                 mudarAberturaSheet(false)
+                                                props.navegarPara("mural")
                                             }}
                                         />
                                     ))}

@@ -22,7 +22,7 @@ export default function App() {
 
       <Navbar onAbrirMenu={() => setSidebarAberta(true)} />
 
-      <View className="flex-1">
+      <View className="flex-1 mb-14">
         <GerenciadorTelas
           usuario={usuario}
           mudarInscricao={mudarInscricao}
