@@ -1,7 +1,7 @@
 import { Text } from "@/components/ui/text"
 import { TurmaCard } from "./TurmaCard"
 import { usePesquisa } from "@/hooks/usePesquisa"
-import { Modal, Pressable, ScrollView, View, TextInput, TouchableOpacity } from "react-native"
+import { Modal, Pressable, ScrollView, View, TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
 import { X } from "lucide-react-native"
 import { iconWithClassName } from "@/lib/iconWithClassName"
 
@@ -18,6 +18,9 @@ export function Pesquisar(props: PesquisarProps) {
     const { textoPesquisa, setTextoPesquisa, aberto, mudarAberturaSheet, turmasFiltradas, inputRef } = usePesquisa({
         aoFecharPesquisa: props.voltarPrincipal
     })
+    const { width } = useWindowDimensions()
+    const colunas = width >= 1200 ? 3 : width >= 768 ? 2 : 1
+    const larguraCard = colunas === 1 ? "100%" : colunas === 2 ? "50%" : "33.3333%"
 
     return (
         // Sistema de pesquisa que da efeito de baixo para cima de pesquisa
@@ -72,24 +75,25 @@ export function Pesquisar(props: PesquisarProps) {
                                     {turmasFiltradas.length} resultado{turmasFiltradas.length !== 1 ? "s" : ""}
                                 </Text>
 
-                                <View className="flex-col gap-2">
+                                <View className="flex-row flex-wrap">
                                     {turmasFiltradas.map(([key, turma]) => (
-                                        <TurmaCard
-                                            key={key}
-                                            compacto={true}
-                                            materia={turma.materia}
-                                            banners={turma.banners}
-                                            professor={turma.professor}
-                                            fotoProfessor={turma.foto_professor}
-                                            sala={turma.sala}
-                                            turma={turma.turma}
-                                            inscrito={props.estaInscrito(key)}
-                                            clickInscrito={() => props.mudarInscricao(key)}
-                                            clickMural={() => {
-                                                props.marcarMural(key)
-                                                mudarAberturaSheet(false)
-                                            }}
-                                        />
+                                        <View key={key} className="mb-2 px-1" style={{ width: larguraCard }}>
+                                            <TurmaCard
+                                                compacto={true}
+                                                materia={turma.materia}
+                                                banners={turma.banners}
+                                                professor={turma.professor}
+                                                fotoProfessor={turma.foto_professor}
+                                                sala={turma.sala}
+                                                turma={turma.turma}
+                                                inscrito={props.estaInscrito(key)}
+                                                clickInscrito={() => props.mudarInscricao(key)}
+                                                clickMural={() => {
+                                                    props.marcarMural(key)
+                                                    mudarAberturaSheet(false)
+                                                }}
+                                            />
+                                        </View>
                                     ))}
                                 </View>
                             </>
