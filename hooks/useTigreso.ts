@@ -52,23 +52,27 @@ export function useTigreso(navegarPara?: (tela: OpcoesTela) => void) {
       return
     }
 
-    setTimeout(() => {
-      if (typeof window === "undefined") {
-        return
-      }
+    if (typeof window === "undefined") {
+      return
+    }
 
-      try {
-        window.open("", "_self")
-      } catch {}
+    // Tenta fechar a aba imediatamente dentro do gesto de clique.
+    try {
+      window.open("", "_self")
+    } catch {}
 
+    try {
       window.close()
+    } catch {}
 
-      setTimeout(() => {
-        if (!window.closed) {
-          window.location.replace("about:blank")
-        }
-      }, 150)
-    }, 1000)
+    // Fallback: se o navegador bloquear o close, sai do app para uma pagina vazia.
+    if (!window.closed) {
+      try {
+        window.location.replace("about:blank")
+      } catch {
+        window.location.href = "about:blank"
+      }
+    }
   }
   const clickAdorar = () => {
     setFeedback({
