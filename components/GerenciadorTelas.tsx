@@ -55,12 +55,12 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
             )}
 
             {props.usuario.acessouOq === "pesquisar" && (
-                <View className="w-full flex items-center justify-center p-4">
+                <View style={{ flex: 1, width: '100%', padding: 16 }}>
                     <Pesquisar
                         estaInscrito={props.estaInscrito}
                         mudarInscricao={props.mudarInscricao}
                         marcarMural={props.marcarMural}
-                        navegarPara={(tela) => props.navegarPara(tela)}
+                        navegarPara={props.navegarPara}
                         voltarPrincipal={() => props.navegarPara("principal")}
                     />
                 </View>
