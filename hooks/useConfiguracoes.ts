@@ -1,5 +1,9 @@
 import { useState } from "react"
-/*import { getAssetPath } from "@/lib/assetPath"*/
+import { Platform, Vibration } from "react-native"
+import { Audio } from "expo-av"
+
+const CLIQUES_PARA_SUPORTE = 5
+const TIGRESO_SOUND = require("../assets/sons/tigreso.mp3")
 
 export function useConfiguracoes() {
     const [notificacoes, setNotificacoes] = useState(false)
@@ -9,52 +13,74 @@ export function useConfiguracoes() {
         setNotificacoes(!notificacoes)
     }
 
-    /*const clicarSuporte = () => {
-        const novaContagem = contagemSuporte + 1
-        setContagemSuporte(novaContagem)
+    const tocarBeepWeb = () => {
+        const AudioContextClass =
+            (globalThis as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext }).AudioContext ||
+            (globalThis as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext }).webkitAudioContext
 
-        if (novaContagem === 5) {
+        if (!AudioContextClass) {
+            return
+        }
 
-            const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+        try {
             const audioContext = new AudioContextClass()
+            const oscillator = audioContext.createOscillator()
+            const gainNode = audioContext.createGain()
 
-            try {
-                const audio = new Audio(getAssetPath('sons/tigreso.mp3'))
-                audio.crossOrigin = 'anonymous'
-                audio.volume = 1
+            oscillator.connect(gainNode)
+            gainNode.connect(audioContext.destination)
 
-                const source = audioContext.createMediaElementSource(audio)
-                const gainNode = audioContext.createGain()
-                source.connect(gainNode)
-                gainNode.connect(audioContext.destination)
+            oscillator.type = "square"
+            oscillator.frequency.value = 880
+            gainNode.gain.value = 0.15
 
-                gainNode.gain.value = 5.0
-
-                audio.play().catch((error) => {
-                    console.error('❌ Erro no MP3, fallback para beep:', error)
-
-                    const oscillator = audioContext.createOscillator()
-                    const fallbackGainNode = audioContext.createGain()
-                    oscillator.connect(fallbackGainNode)
-                    fallbackGainNode.connect(audioContext.destination)
-
-                    oscillator.frequency.value = 900
-                    oscillator.type = 'square'
-                    fallbackGainNode.gain.value = 0.8
-
-                    oscillator.start()
-                    oscillator.stop(audioContext.currentTime + 0.25)
-                })
-
-            } catch (error) {
-                console.error('❌ Erro ao preparar áudio:', error)
-            }
+            oscillator.start()
+            oscillator.stop(audioContext.currentTime + 0.2)
+        } catch {
+            // Sem fallback adicional.
         }
     }
-    
-    const resetarContador = () => {
-        setContagemSuporte(0)
-    }*/
 
-    return { notificacoes, clickarNotificacoes }
+    const tocarSomTigreso = async () => {
+        try {
+            await Audio.setAudioModeAsync({
+                playsInSilentModeIOS: true,
+                shouldDuckAndroid: true,
+            })
+
+            const { sound } = await Audio.Sound.createAsync(
+                TIGRESO_SOUND,
+                { shouldPlay: true, volume: 1 }
+            )
+
+            sound.setOnPlaybackStatusUpdate((status) => {
+                if (status.isLoaded && status.didJustFinish) {
+                    sound.unloadAsync().catch(() => {})
+                }
+            })
+        } catch {
+            if (Platform.OS === "web") {
+                tocarBeepWeb()
+                return
+            }
+
+            Vibration.vibrate(250)
+        }
+    }
+
+    const clicarSuporte = (aoDesbloquear?: () => void) => {
+        const novaContagem = contagemSuporte + 1
+        const desbloqueou = novaContagem >= CLIQUES_PARA_SUPORTE
+
+        setContagemSuporte(desbloqueou ? 0 : novaContagem)
+
+        if (desbloqueou) {
+            void tocarSomTigreso()
+            aoDesbloquear?.()
+        }
+
+        return desbloqueou
+    }
+
+    return { notificacoes, clickarNotificacoes, clicarSuporte }
 }

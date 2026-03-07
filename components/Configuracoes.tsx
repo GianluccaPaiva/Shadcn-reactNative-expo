@@ -13,7 +13,7 @@ const icons = [Settings, X];
 iconListWithClassName(icons);
 
 export function Configuracoes({ navegarPara }: ConfiguracoesProps) {
-  const { notificacoes, clickarNotificacoes } = useConfiguracoes();
+  const { notificacoes, clickarNotificacoes, clicarSuporte } = useConfiguracoes();
   const [menuAberto, setMenuAberto] = useState(false);
 
   const fecharMenu = () => setMenuAberto(false);
@@ -71,8 +71,14 @@ export function Configuracoes({ navegarPara }: ConfiguracoesProps) {
             <TouchableOpacity
               className="py-3"
               onPress={() => {
-                fecharMenu();
-                if (navegarPara) navegarPara("suporte");
+                const desbloqueou = clicarSuporte(() => {
+                  fecharMenu();
+                  if (navegarPara) navegarPara("suporte");
+                });
+
+                if (!desbloqueou) {
+                  // Mantem o menu aberto para permitir os 5 cliques seguidos no suporte.
+                }
               }}
             >
               <Text className="text-base text-foreground">Suporte</Text>
