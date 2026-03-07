@@ -29,7 +29,7 @@ export function TurmaCard({ materia, professor, banners, fotoProfessor, sala, tu
         <Image
           source={{ uri: banners }}
           accessibilityLabel={`Banner da turma ${materia}`}
-          className={`${compacto ? "h-24" : "h-44"} w-full`}
+          className={`${compacto ? "h-44" : "h-44"} w-full`}
           resizeMode="cover"
         />
         <View className="absolute inset-0 bg-black/35" />
