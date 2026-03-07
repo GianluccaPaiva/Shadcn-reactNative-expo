@@ -34,13 +34,15 @@ export function Mural({ materia, turma }: MuralProps) {
 
   return (
     <View className="mx-auto min-h-screen w-full max-w-3xl space-y-1 pb-16">
-      <Card className="relative h-80 w-full overflow-hidden">
-        <Image
-          source={{ uri: turma.banners }}
-          accessibilityLabel={`Banner da turma ${materia}`}
-          className="absolute inset-0 h-full w-full"
-          resizeMode="cover"
-        />
+      <Card className="relative h-80 w-full overflow-hidden border-0 bg-transparent py-0 shadow-none">
+        <View className="absolute inset-0 h-full w-full">
+          <Image
+            source={{ uri: turma.banners }}
+            accessibilityLabel={`Banner da turma ${materia}`}
+            style={{ width: '100%', height: '100%' }}
+            resizeMode="cover"
+          />
+        </View>
         <View className="absolute inset-0 bg-black/50" />
 
         <CardHeader className="relative z-10 flex h-full flex-col justify-between">
@@ -51,7 +53,7 @@ export function Mural({ materia, turma }: MuralProps) {
             </CardDescription>
           </View>
 
-          <View className="flex flex-col items-end gap-1">
+          <View className="flex flex-col items-end gap-2">
             <Image
               source={{ uri: turma.foto_professor }}
               accessibilityLabel={`Foto do professor ${turma.professor}`}
@@ -59,44 +61,46 @@ export function Mural({ materia, turma }: MuralProps) {
               resizeMode="cover"
             />
 
-            <Button
-              onPress={abrirMural}
-              className="min-w-[120px] justify-end px-0 text-white"
-              variant="link"
-              size="sm"
-            >
-              <Text>Mural</Text>
-            </Button>
-            <Button
-              onPress={abrirAtividades}
-              className="min-w-[120px] justify-end px-0 text-white"
-              variant="link"
-              size="sm"
-            >
-              <Text>Atividades</Text>
-            </Button>
-            <Button
-              onPress={abrirContato}
-              className="min-w-[120px] justify-end px-0 text-white"
-              variant="link"
-              size="sm"
-            >
-              <Text>Entrar em contato</Text>
-            </Button>
-            <Button
-              onPress={abrirAlunos}
-              className="min-w-[120px] justify-end px-0 text-white"
-              variant="link"
-              size="sm"
-            >
-              <Text>Alunos</Text>
-            </Button>
+            <View className="flex flex-row items-center gap-2">
+              <Button
+                onPress={abrirMural}
+                className="px-2 text-white"
+                variant="link"
+                size="sm"
+              >
+                <Text>Mural</Text>
+              </Button>
+              <Button
+                onPress={abrirAtividades}
+                className="px-2 text-white"
+                variant="link"
+                size="sm"
+              >
+                <Text>Atividades</Text>
+              </Button>
+              <Button
+                onPress={abrirContato}
+                className="px-2 text-white"
+                variant="link"
+                size="sm"
+              >
+                <Text>Entrar em contato</Text>
+              </Button>
+              <Button
+                onPress={abrirAlunos}
+                className="px-2 text-white"
+                variant="link"
+                size="sm"
+              >
+                <Text>Alunos</Text>
+              </Button>
+            </View>
           </View>
         </CardHeader>
       </Card>
 
       <Button
-        className="w-fit"
+        className="mt-3 w-fit"
         onPress={() => {
           abrirMural()
           mudarAberturaBox(true)
