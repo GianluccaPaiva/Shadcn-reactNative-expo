@@ -1,12 +1,16 @@
 import React, { useState } from "react"
 import { View, Text, TouchableOpacity, Switch, Modal, Pressable } from "react-native"
 import { Settings, X } from "lucide-react-native"
+import { iconListWithClassName } from "@/lib/iconWithClassName"
 import { useConfiguracoes } from "@/hooks/useConfiguracoes"
 import type { OpcoesTela } from "@/hooks/useGerenciador"
 
 type ConfiguracoesProps = {
   navegarPara?: (tela: OpcoesTela) => void
 }
+
+const icons = [Settings, X];
+iconListWithClassName(icons);
 
 export function Configuracoes({ navegarPara }: ConfiguracoesProps) {
   const { notificacoes, clickarNotificacoes } = useConfiguracoes();
