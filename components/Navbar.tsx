@@ -49,7 +49,7 @@ export function Navbar({ onAbrirMenu }: NavbarProps) {
                 {/* Notificações */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-9 w-9">
+                        <Button variant="ghost" size="icon" className="h-9 w-9 mr-1">
                             <Bell className="text-foreground" size={20} />
                         </Button>
                     </DropdownMenuTrigger>
@@ -81,7 +81,7 @@ export function Navbar({ onAbrirMenu }: NavbarProps) {
                 {/* Tema */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-9 w-9">
+                        <Button variant="ghost" size="icon" className="h-9 w-9 mr-1">
                             {colorScheme === 'dark' ? (
                                 <Moon className="text-foreground" size={20} />
                             ) : (
@@ -105,9 +105,9 @@ export function Navbar({ onAbrirMenu }: NavbarProps) {
                 {/* Perfil */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-9 w-9 rounded-full p-0 ml-1">
+                        <Button variant="ghost" className="h-9 w-9 mr-1 rounded-full p-0 ml-1">
                             <Avatar className="h-8 w-8" alt="User avatar">
-                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarImage source={{ uri: "https://github.com/shadcn.png" }} />
                                 <AvatarFallback>
                                     <Text>US</Text>
                                 </AvatarFallback>
