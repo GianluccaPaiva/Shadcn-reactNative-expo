@@ -128,7 +128,6 @@ export function AppSidebar({ navegarPara, inscricoes, marcarMural }: AppSidebarP
 
             {/* Footer */}
             <View className="p-4">
-                {/*Tiver q mogar a funcionalidade do tigreso*/}
                 <Configuracoes navegarPara={navegarPara} />
             </View>
         </View>

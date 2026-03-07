@@ -1,12 +1,13 @@
 import './global.css';
 import { useState } from 'react';
-import { View, Text, Modal, TouchableOpacity } from "react-native";
+import { View, Modal, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "nativewind";
 import { PortalHost } from '@rn-primitives/portal';
 import { Navbar } from "@/components/Navbar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { useGerenciador } from "@/hooks/useGerenciador";
+import { GerenciadorTelas } from "@/components/GerenciadorTelas";
 
 export default function App() {
   const { colorScheme } = useColorScheme();
@@ -21,14 +22,16 @@ export default function App() {
 
       <Navbar onAbrirMenu={() => setSidebarAberta(true)} />
 
-      {/*GerenciadorTelas entrará aqui depois */}
-      <View className="flex-1 items-center justify-center p-4">
-        <Text className="text-foreground text-center text-lg">
-          O Portal foi aberto! Teste os botões e o tema agora.
-        </Text>
+      <View className="flex-1">
+        <GerenciadorTelas
+          usuario={usuario}
+          mudarInscricao={mudarInscricao}
+          estaInscrito={estaInscrito}
+          marcarMural={marcarMural}
+          navegarPara={navegarPara}
+        />
       </View>
 
-      {/* Modal que cria o efeito de Drawer (Menu Lateral) para o mobile */}
       <Modal
         visible={sidebarAberta}
         animationType="fade"
