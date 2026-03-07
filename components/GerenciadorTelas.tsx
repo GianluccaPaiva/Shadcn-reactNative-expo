@@ -2,10 +2,8 @@ import { listaEscolar } from "@/hooks/leituraJson";
 import { TurmaCard } from "./TurmaCard";
 import { Mural } from "./Mural";
 import { Calendario } from "./Calendario";
-import { Pesquisar } from "./Pesquisar";
 import { Mensagens } from "./Mensagens";
 import type { OpcoesTela } from "@/hooks/useGerenciador";
-import { TigresoEXE } from "./TigresoEXE";
 import { View, ScrollView } from "react-native";
 
 type GerenciadorTelasProps = {
@@ -20,8 +18,8 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
     const turmaSelecionada = listaEscolar.turmas[props.usuario.chaveMural];
 
     return (
-        <View>
-            {(props.usuario.acessouOq === "principal" || props.usuario.acessouOq === "pesquisar") && (
+        <View className="flex-1">
+            {props.usuario.acessouOq === "principal" && (
                 <ScrollView className="flex-1">
                     <View className="flex-row flex-wrap justify-between p-4">
                         {listaEscolar.turmas && Object.entries(listaEscolar.turmas).map(([key, turma]) => (
@@ -55,7 +53,6 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
 
             {props.usuario.acessouOq === "pesquisar" &&
                 <View className="w-full flex items-center justify-center p-4">
-                    {/*<Pesquisar mudarInscricao={props.mudarInscricao} estaInscrito={props.estaInscrito} marcarMural={props.marcarMural} voltarPrincipal={() => props.navegarPara("principal")}/>*/}
                 </View>}
             {props.usuario.acessouOq === "mensagens" &&
                 <View className="w-full flex items-center justify-center p-4">
@@ -63,9 +60,7 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
                 </View>}
             {props.usuario.acessouOq === "suporte" &&
                 <View className="w-full flex items-center justify-center p-4">
-                    <View>
-                        {/*<TigresoEXE navegarPara={props.navegarPara} />*/}
-                    </View>
+                    <View />
                 </View>}
         </View>
     )
