@@ -6,6 +6,7 @@ import { Mensagens } from "./Mensagens";
 import type { OpcoesTela } from "@/hooks/useGerenciador";
 import { View, ScrollView } from "react-native";
 import { Pesquisar } from "./Pesquisar";
+import { TigresoEXE } from "./TigresoEXE";
 
 type GerenciadorTelasProps = {
     usuario: any;
@@ -71,8 +72,8 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
             )}
 
             {props.usuario.acessouOq === "suporte" && (
-                <View className="w-full flex items-center justify-center p-4">
-                    <View />
+                <View className="flex-1 w-full p-4">
+                    <TigresoEXE navegarPara={(tela) => props.navegarPara(tela)} />
                 </View>
             )}
         </View>
