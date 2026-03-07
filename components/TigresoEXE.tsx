@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Text } from "@/components/ui/text"
@@ -13,35 +12,7 @@ type TigresoEXEProps = {
 }
 
 export function TigresoEXE({ navegarPara }: TigresoEXEProps) {
-  const [feedback, setFeedback] = useState<{
-    title: string
-    message: string
-    variant?: "default" | "destructive"
-  } | null>(null)
-
-  const { clickMatar, clickAdorar } = useTigreso(navegarPara, setFeedback)
-  const hasShown = useRef(false)
-
-  useEffect(() => {
-    if (!hasShown.current) {
-      setFeedback({
-        title: "Gloria ao Tigreso",
-        message:
-          "Ajoelhe-se e adore o grande Tigreso, o deus supremo do suporte e guardiao da estabilidade.",
-      })
-      hasShown.current = true
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!feedback) return
-
-    const timer = setTimeout(() => {
-      setFeedback(null)
-    }, 3500)
-
-    return () => clearTimeout(timer)
-  }, [feedback])
+  const { clickMatar, clickAdorar, feedback } = useTigreso(navegarPara)
 
   return (
     <View className="relative flex-1">

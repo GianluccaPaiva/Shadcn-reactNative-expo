@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import type { OpcoesTela } from "./useGerenciador"
 import { Alert as NativeAlert, BackHandler, Platform } from "react-native"
 
@@ -7,14 +8,33 @@ type FeedbackPayload = {
   variant?: "default" | "destructive"
 }
 
-type MostrarFeedback = (payload: FeedbackPayload) => void
+export function useTigreso(navegarPara?: (tela: OpcoesTela) => void) {
+  const [feedback, setFeedback] = useState<FeedbackPayload | null>(null)
+  const hasShownInitialFeedback = useRef(false)
 
-export function useTigreso(
-  navegarPara?: (tela: OpcoesTela) => void,
-  mostrarFeedback?: MostrarFeedback
-) {
+  useEffect(() => {
+    if (!hasShownInitialFeedback.current) {
+      setFeedback({
+        title: "Gloria ao Tigreso",
+        message:
+          "Glória ao Tigreso. Ajoelhe-se e adore o grande Tigreso, o deus supremo do suporte. Ele é o senhor dos bugs, o mestre dos erros e o guardião da estabilidade. Com seu poder divino, ele protege os sistemas e garante que tudo funcione perfeitamente. Glória ao Tigreso, o deus do suporte!",
+      })
+      hasShownInitialFeedback.current = true
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!feedback) return
+
+    const timer = setTimeout(() => {
+      setFeedback(null)
+    }, 3500)
+
+    return () => clearTimeout(timer)
+  }, [feedback])
+
   const clickMatar = () => {
-    mostrarFeedback?.({
+    setFeedback({
       title: "Tigreso ofendido",
       message: "Como ousa tentar matar o grande Tigreso? Sofra por isso.",
       variant: "destructive",
@@ -51,7 +71,7 @@ export function useTigreso(
     }, 1000)
   }
   const clickAdorar = () => {
-    mostrarFeedback?.({
+    setFeedback({
       title: "Gloria ao Tigreso",
       message: "Voce adorou o Tigreso! Gloria ao Tigreso!",
     })
@@ -59,5 +79,5 @@ export function useTigreso(
       navegarPara("principal")
     }
   }
-  return { clickMatar, clickAdorar }
+  return { clickMatar, clickAdorar, feedback }
 }
