@@ -58,20 +58,3 @@
   }
 }
 
-@layer utilities {
-  .pagina-principal {
-    @apply w-full flex-1 flex flex-col;
-  }
-  .pagina-conteudo {
-    @apply flex-1 p-4;
-  }
-  .barra-navegacao {
-    @apply bg-background p-1 w-full flex items-center justify-between;
-  }
-  .conteiner-navegacao {
-    @apply flex items-center gap-4 mr-4;
-  }
-  .icones-minha-conta {
-    @apply h-[1.2rem] w-[1.2rem] mr-2;
-  }
-}
