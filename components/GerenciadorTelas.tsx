@@ -49,7 +49,7 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
                 </View>
             )}
             {props.usuario.acessouOq === "calendario" && (
-                <View className="w-full flex items-center justify-center p-4">
+                <View className="w-full flex items-center justify-center p-4 mt-16">
                     <Calendario />
                 </View>
             )}
