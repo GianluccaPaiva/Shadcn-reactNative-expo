@@ -1,10 +1,24 @@
-import { toast } from "sonner"
 import type { OpcoesTela } from "./useGerenciador"
-import { Alert, BackHandler, Platform } from "react-native"
+import { Alert as NativeAlert, BackHandler, Platform } from "react-native"
 
-export function useTigreso(navegarPara?: (tela: OpcoesTela) => void) {
+type FeedbackPayload = {
+  title: string
+  message: string
+  variant?: "default" | "destructive"
+}
+
+type MostrarFeedback = (payload: FeedbackPayload) => void
+
+export function useTigreso(
+  navegarPara?: (tela: OpcoesTela) => void,
+  mostrarFeedback?: MostrarFeedback
+) {
   const clickMatar = () => {
-    toast("Como ousa tentar matar o grande Tigreso? Sofra por isso")
+    mostrarFeedback?.({
+      title: "Tigreso ofendido",
+      message: "Como ousa tentar matar o grande Tigreso? Sofra por isso.",
+      variant: "destructive",
+    })
 
     if (Platform.OS !== "web") {
       setTimeout(() => {
@@ -13,7 +27,7 @@ export function useTigreso(navegarPara?: (tela: OpcoesTela) => void) {
           return
         }
 
-        Alert.alert("Tigreso ofendido", "No iOS, o app nao pode ser fechado programaticamente.")
+        NativeAlert.alert("Tigreso ofendido", "No iOS, o app nao pode ser fechado programaticamente.")
       }, 1000)
       return
     }
@@ -37,7 +51,10 @@ export function useTigreso(navegarPara?: (tela: OpcoesTela) => void) {
     }, 1000)
   }
   const clickAdorar = () => {
-    toast("Você adorou o Tigreso! Glória ao Tigreso!")
+    mostrarFeedback?.({
+      title: "Gloria ao Tigreso",
+      message: "Voce adorou o Tigreso! Gloria ao Tigreso!",
+    })
     if (navegarPara) {
       navegarPara("principal")
     }

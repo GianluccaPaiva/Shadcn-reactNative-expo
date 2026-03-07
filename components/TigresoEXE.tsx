@@ -1,32 +1,69 @@
-import { toast } from "sonner"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Text } from "@/components/ui/text"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useTigreso } from "@/hooks/useTigreso"
 import type { OpcoesTela } from "@/hooks/useGerenciador"
-import { Image, SafeAreaView, ScrollView, View } from "react-native"
+import { CircleAlert, ShieldAlert } from "lucide-react-native"
+import { Image, ScrollView, View } from "react-native"
 
 type TigresoEXEProps = {
   navegarPara?: (tela: OpcoesTela) => void
 }
 
 export function TigresoEXE({ navegarPara }: TigresoEXEProps) {
-  const { clickMatar, clickAdorar } = useTigreso(navegarPara)
+  const [feedback, setFeedback] = useState<{
+    title: string
+    message: string
+    variant?: "default" | "destructive"
+  } | null>(null)
+
+  const { clickMatar, clickAdorar } = useTigreso(navegarPara, setFeedback)
   const hasShown = useRef(false)
 
   useEffect(() => {
     if (!hasShown.current) {
-      toast("Glória ao Tigreso. Ajoelhe-se e adore o grande Tigreso, o deus supremo do suporte. Ele é o senhor dos bugs, o mestre dos erros e o guardião da estabilidade. Com seu poder divino, ele protege os sistemas e garante que tudo funcione perfeitamente. Glória ao Tigreso, o deus do suporte!")
+      setFeedback({
+        title: "Gloria ao Tigreso",
+        message:
+          "Ajoelhe-se e adore o grande Tigreso, o deus supremo do suporte e guardiao da estabilidade.",
+      })
       hasShown.current = true
     }
   }, [])
 
+  useEffect(() => {
+    if (!feedback) return
+
+    const timer = setTimeout(() => {
+      setFeedback(null)
+    }, 3500)
+
+    return () => clearTimeout(timer)
+  }, [feedback])
+
   return (
-      <ScrollView contentContainerClassName="flex-grow items-center justify-center px-4 py-6">
+    <View className="relative flex-1">
+      {feedback && (
+        <View className="absolute left-3 right-3 top-3 z-50">
+          <Alert
+            variant={feedback.variant}
+            icon={feedback.variant === "destructive" ? ShieldAlert : CircleAlert}
+            className="bg-background/95 shadow-sm shadow-black/20"
+          >
+            <AlertTitle>{feedback.title}</AlertTitle>
+            <AlertDescription>{feedback.message}</AlertDescription>
+          </Alert>
+        </View>
+      )}
+
+      <ScrollView
+        contentContainerClassName={`flex-grow items-center justify-center px-4 ${feedback ? "pb-6 pt-24" : "py-6"}`}
+      >
         <Card className="w-full max-w-md bg-yellow-500 py-4">
           <CardHeader>
-          <CardTitle>Glorifique o Tigreso</CardTitle>
+            <CardTitle>Glorifique o Tigreso</CardTitle>
           </CardHeader>
           <CardContent>
             <Image
@@ -34,8 +71,9 @@ export function TigresoEXE({ navegarPara }: TigresoEXEProps) {
                 uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvBcRo5HWNC-WR4C4ls6kVCYEp9Ja7W0azAA&s",
               }}
               accessibilityLabel="Apenas tigreso"
-              className="mx-auto mb-4 h-80 w-full rounded-lg"
-              resizeMode="cover"
+              className="mx-auto mb-4 w-full rounded-lg bg-black/10"
+              style={{ aspectRatio: 1 }}
+              resizeMode="contain"
             />
             <View className="flex-row gap-3">
               <Button variant="destructive" size="lg" className="flex-1" onPress={clickMatar}>
@@ -48,5 +86,6 @@ export function TigresoEXE({ navegarPara }: TigresoEXEProps) {
           </CardContent>
         </Card>
       </ScrollView>
+    </View>
   )
 }
