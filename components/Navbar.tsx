@@ -38,7 +38,7 @@ export function Navbar({ onAbrirMenu }: NavbarProps) {
                 <TouchableOpacity className="p-2" onPress={onAbrirMenu}>
                     <Menu className="text-foreground" size={24} />
                 </TouchableOpacity>
-                <Text className="text-lg font-bold text-foreground">
+                <Text className="text-2xl font-extrabold text-foreground">
                     NexusClass
                 </Text>
             </View>

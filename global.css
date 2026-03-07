@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* MODO CLARO */
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 14%;
@@ -19,14 +18,13 @@
     --muted-foreground: 0 0% 45%;
     --accent: 0 0% 96%;
     --accent-foreground: 0 0% 14%;
-    --destructive: 0 84% 60%;
+    --destructive: 347 77% 50%;
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 262 83% 58%;
     --radius: 0.625rem;
   }
-
-  /* MODO ESCURO */
+  
   .dark {
     --background: 0 0% 14%;
     --foreground: 0 0% 98%;
@@ -42,19 +40,17 @@
     --muted-foreground: 0 0% 70%;
     --accent: 0 0% 22%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 348 83% 47%;
+    --destructive: 347 77% 50%;
     --border: 0 0% 25%;
     --input: 0 0% 25%;
     --ring: 262 83% 58%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-

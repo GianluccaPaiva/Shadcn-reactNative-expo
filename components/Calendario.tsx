@@ -37,7 +37,7 @@ export function Calendario() {
           markedDates={{
             [dataString || '']: {
               selected: true,
-              selectedColor: '#8b5cf6', // Roxo principal
+              selectedColor: '#8b5cf6',
               selectedTextColor: '#ffffff'
             }
           }}

@@ -12,7 +12,6 @@ import { GerenciadorTelas } from "@/components/GerenciadorTelas";
 export default function App() {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
-
   const { usuario, mudarInscricao, estaInscrito, marcarMural, navegarPara } = useGerenciador();
   const [sidebarAberta, setSidebarAberta] = useState(false);
 
@@ -56,6 +55,7 @@ export default function App() {
           />
         </View>
       </Modal>
+
       <PortalHost />
     </View>
   )
