@@ -56,7 +56,6 @@ export default function App() {
           />
         </View>
       </Modal>
-
       <PortalHost />
     </View>
   )

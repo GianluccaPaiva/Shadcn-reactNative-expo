@@ -11,22 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { View } from "react-native"
 import { AlertCircle, MessageCircle, MoreHorizontal, User2, Users } from "lucide-react-native"
+import { getCorMateria } from "@/lib/utils"
 
 type AlunosTurmaProps = {
   turma: TurmaProps
-}
-
-function getCorAvatar(index: number) {
-  const cores = [
-    "bg-blue-600",
-    "bg-emerald-600",
-    "bg-orange-600",
-    "bg-pink-600",
-    "bg-violet-600",
-    "bg-cyan-600",
-  ]
-
-  return cores[index % cores.length]
 }
 
 export function AlunosTurma({ turma }: AlunosTurmaProps) {
@@ -59,9 +47,9 @@ export function AlunosTurma({ turma }: AlunosTurmaProps) {
           >
             <View className="flex-1 flex-row items-center gap-3">
               <View
-                className={`h-8 w-8 items-center justify-center rounded-full ${getCorAvatar(index)}`}
+                className={`h-8 w-8 items-center justify-center rounded-full ${getCorMateria(turma.alunos[index]).bg}`}
               >
-                <Text className="text-xs font-bold text-white">
+                <Text className={`text-xs font-bold text-white ${getCorMateria(turma.alunos[index]).text}`}>
                   {aluno.charAt(0).toUpperCase()}
                 </Text>
               </View>
