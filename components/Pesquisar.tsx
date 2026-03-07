@@ -1,13 +1,12 @@
-import { Input } from "@/components/ui/input"
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-} from "@/components/ui/sheet"
+import { Text } from "@/components/ui/text"
 import { TurmaCard } from "./TurmaCard"
 import { usePesquisa } from "@/hooks/usePesquisa"
+import { Modal, Pressable, ScrollView, View, TextInput, TouchableOpacity } from "react-native"
+import { useEffect, useRef } from "react"
+import { X } from "lucide-react-native"
+import { iconWithClassName } from "@/lib/iconWithClassName"
+
+iconWithClassName(X)
 
 type PesquisarProps = {
     mudarInscricao: (materia: string) => void
@@ -20,41 +19,71 @@ export function Pesquisar(props: PesquisarProps) {
     const { textoPesquisa, setTextoPesquisa, aberto, mudarAberturaSheet, turmasFiltradas } = usePesquisa({
         aoFecharPesquisa: props.voltarPrincipal
     })
+    const inputRef = useRef<TextInput>(null)
+
+    useEffect(() => {
+        if (aberto) {
+            const timer = setTimeout(() => {
+                inputRef.current?.focus()
+            }, 300)
+            return () => clearTimeout(timer)
+        }
+    }, [aberto])
 
     return (
-        <div className="w-full h-full flex items-center justify-center p-4">
-            <Sheet open={aberto} onOpenChange={mudarAberturaSheet}>
-                <SheetContent side="right" className="w-full sm:w-[400px] lg:w-[450px] flex flex-col p-5">
+        // Sistema de pesquisa que da efeito de baixo para cima de pesquisa
+        <Modal
+            visible={aberto}
+            transparent
+            animationType="slide"
+            onRequestClose={() => mudarAberturaSheet(false)}
+        >   
+        {/* efeito de baixo para cima*/}
+            <View className="flex-1 justify-end">
+                <Pressable
+                    className="flex-1 bg-black/50"
+                    onPress={() => mudarAberturaSheet(false)}
+                />
 
-                    <SheetHeader className="space-y-1 p-0" >
-                        <SheetTitle>Pesquisar Salas</SheetTitle>
-                        <SheetDescription className="text-xs">
-                            Digite para pesquisar turmas, professores ou matérias:
-                        </SheetDescription>
-                    </SheetHeader>
+                <View className="h-[90%] w-full rounded-t-3xl border-t border-border bg-background p-5">
+                    <View className="flex-row items-center justify-between mb-4">
+                        <View className="flex-1">
+                            <Text className="text-2xl font-bold text-foreground">Pesquisar Salas</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => mudarAberturaSheet(false)}
+                            className="ml-2 p-2 rounded-full active:bg-muted/50"
+                        >
+                            <X size={24} className="text-muted-foreground" />
+                        </TouchableOpacity>
+                    </View>
+                    <Text className="mt-1 text-1x1 text-muted-foreground">
+                        Digite para pesquisar turmas, professores ou materias:
+                    </Text>
 
-                    <div className="mt-3 flex flex-col">
-                        <Input
+                    <View className="mt-3">
+                        <TextInput
+                            ref={inputRef}
                             placeholder="Digite sua pesquisa..."
                             value={textoPesquisa}
-                            onChange={(e) => setTextoPesquisa(e.target.value)}
-                            className="w-full h-9 text-sm"
+                            onChangeText={setTextoPesquisa}
+                            className="border-input bg-background text-foreground h-12 rounded-md border px-3 text-base"
                             autoFocus
                         />
-                    </div>
+                    </View>
 
-                    <div className="mt-3 flex-1 overflow-y-auto pr-2 pb-6 space-y-2">
+                    <ScrollView className="mt-3 flex-1" contentContainerClassName="pb-6">
                         {textoPesquisa.trim() === "" ? (
-                            <div className="text-sm text-muted-foreground text-center py-8">
-                                Digite algo para começar a pesquisa
-                            </div>
+                            <Text className="py-8 text-center text-sm text-muted-foreground">
+                                Digite algo para comecar a pesquisa
+                            </Text>
                         ) : turmasFiltradas.length > 0 ? (
                             <>
-                                <div className="text-xs text-muted-foreground mb-2">
-                                    {turmasFiltradas.length} resultado{turmasFiltradas.length !== 1 ? 's' : ''}
-                                </div>
+                                <Text className="mb-2 text-xs text-muted-foreground">
+                                    {turmasFiltradas.length} resultado{turmasFiltradas.length !== 1 ? "s" : ""}
+                                </Text>
 
-                                <div className="flex flex-col gap-2">
+                                <View className="flex-col gap-2">
                                     {turmasFiltradas.map(([key, turma]) => (
                                         <TurmaCard
                                             key={key}
@@ -67,19 +96,22 @@ export function Pesquisar(props: PesquisarProps) {
                                             turma={turma.turma}
                                             inscrito={props.estaInscrito(key)}
                                             clickInscrito={() => props.mudarInscricao(key)}
-                                            clickMural={() => { props.marcarMural(key) }}
+                                            clickMural={() => {
+                                                props.marcarMural(key)
+                                                mudarAberturaSheet(false)
+                                            }}
                                         />
                                     ))}
-                                </div>
+                                </View>
                             </>
                         ) : (
-                            <div className="text-sm text-muted-foreground text-center py-8">
+                            <Text className="py-8 text-center text-sm text-muted-foreground">
                                 Nenhum resultado encontrado para "{textoPesquisa}"
-                            </div>
+                            </Text>
                         )}
-                    </div>
-                </SheetContent>
-            </Sheet>
-        </div>
+                    </ScrollView>
+                </View>
+            </View>
+        </Modal>
     )
 }

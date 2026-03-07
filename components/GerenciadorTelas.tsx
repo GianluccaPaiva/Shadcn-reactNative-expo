@@ -5,6 +5,7 @@ import { Calendario } from "./Calendario";
 import { Mensagens } from "./Mensagens";
 import type { OpcoesTela } from "@/hooks/useGerenciador";
 import { View, ScrollView } from "react-native";
+import { Pesquisar } from "./Pesquisar";
 
 type GerenciadorTelasProps = {
     usuario: any;
@@ -46,22 +47,34 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
                     {turmaSelecionada && <Mural materia={props.usuario.chaveMural} turma={turmaSelecionada} />}
                 </View>
             )}
-            {props.usuario.acessouOq === "calendario" &&
+            {props.usuario.acessouOq === "calendario" && (
                 <View className="w-full flex items-center justify-center p-4">
                     <Calendario />
-                </View>}
+                </View>
+            )}
 
-            {props.usuario.acessouOq === "pesquisar" &&
+            {props.usuario.acessouOq === "pesquisar" && (
                 <View className="w-full flex items-center justify-center p-4">
-                </View>}
-            {props.usuario.acessouOq === "mensagens" &&
+                    <Pesquisar
+                        estaInscrito={props.estaInscrito}
+                        mudarInscricao={props.mudarInscricao}
+                        marcarMural={props.marcarMural}
+                        voltarPrincipal={() => props.navegarPara("principal")}
+                    />
+                </View>
+            )}
+
+            {props.usuario.acessouOq === "mensagens" && (
                 <View className="w-full flex items-center justify-center p-4">
                     <Mensagens />
-                </View>}
-            {props.usuario.acessouOq === "suporte" &&
+                </View>
+            )}
+
+            {props.usuario.acessouOq === "suporte" && (
                 <View className="w-full flex items-center justify-center p-4">
                     <View />
-                </View>}
+                </View>
+            )}
         </View>
     )
 }
