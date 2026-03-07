@@ -32,7 +32,7 @@ export function Pesquisar(props: PesquisarProps) {
                     <TextInput
                         ref={inputRef}
                         placeholder="Digite sua pesquisa..."
-                        placeholderTextColor="#64748b"
+                        placeholderTextColor="#8b5cf6"
                         value={textoPesquisa}
                         onChangeText={setTextoPesquisa}
                         className="flex-1 text-foreground text-base h-full outline-none"

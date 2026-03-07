@@ -1,14 +1,12 @@
 import type { TurmaProps } from "@/hooks/leituraJson"
 import { Button } from "@/components/ui/button"
 import { Text } from "@/components/ui/text"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { Plus } from "lucide-react-native"
-import { Image, View, ScrollView } from "react-native" // Adicionado ScrollView
-
+import { Image, View, ScrollView } from "react-native"
 import { useMural } from "@/hooks/useMural"
 import { BoxMural } from "./BoxMural"
-import { AtendimentoContato } from "./AtendimentoContato"
-import { AlunosTurma } from "./AlunosTurma" // Ajustado o caminho de importação
+import { AlunosTurma } from "./AlunosTurma"
 
 type MuralProps = {
   materia: string
@@ -20,22 +18,16 @@ export function Mural({ materia, turma }: MuralProps) {
     posts,
     conteudo,
     setConteudo,
-    assunto,
-    setAssunto,
     mudarAberturaBox,
     handlePublicar,
     handleCancelar,
     abrirMural,
     abrirAtividades,
     abrirAlunos,
-    // abrirContato e abrirMensagemContato removidos da interface principal conforme combinado
   } = useMural()
 
   return (
-    // Substituído View por ScrollView para permitir rolagem no mobile
     <ScrollView className="flex-1 w-full bg-background" contentContainerClassName="pb-24">
-
-      {/* Banner Superior - Mais compacto (h-40) */}
       <View className="relative h-40 w-full overflow-hidden bg-muted">
         <Image
           source={{ uri: turma.banners }}
@@ -43,10 +35,8 @@ export function Mural({ materia, turma }: MuralProps) {
           className="absolute inset-0 h-full w-full"
           resizeMode="cover"
         />
-        {/* Overlay um pouco mais escuro para o texto branco ler bem */}
         <View className="absolute inset-0 bg-black/60" />
 
-        {/* Textos e Avatar alinhados no fundo do banner */}
         <View className="absolute inset-0 p-4 flex-row items-end justify-between">
           <View className="flex-1 pr-4">
             <Text className="text-2xl font-bold text-white mb-1" numberOfLines={1}>
@@ -66,7 +56,6 @@ export function Mural({ materia, turma }: MuralProps) {
         </View>
       </View>
 
-      {/* Menu de Abas (Tabs) logo abaixo do banner */}
       <View className="flex-row w-full bg-card border-b border-border p-2 gap-2">
         <Button
           onPress={abrirMural}
@@ -104,8 +93,6 @@ export function Mural({ materia, turma }: MuralProps) {
 
       {/* Conteúdo Dinâmico */}
       <View className="p-4 space-y-4">
-
-        {/* O Botão de Postar só aparece se estiver na aba Mural */}
         {posts.tipoAmostar === "mural" && (
           <Button
             className="w-full flex-row items-center justify-center mb-2"

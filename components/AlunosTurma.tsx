@@ -42,13 +42,13 @@ export function AlunosTurma({ turma }: AlunosTurmaProps) {
         </Text>
       </View>
 
-      <Card className="overflow-hidden border border-border bg-card p-0">
+      <Card className="overflow-hidden border border-border bg-card p-0 mt-4">
         <View className="flex-row border-b border-border bg-muted/30 px-4 py-3">
           <Text className="flex-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Nome do aluno
           </Text>
           <Text className="w-20 text-right text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Acoes
+            Açoes
           </Text>
         </View>
 
