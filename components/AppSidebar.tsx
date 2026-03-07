@@ -107,8 +107,8 @@ export function AppSidebar({ navegarPara, inscricoes, marcarMural }: AppSidebarP
                                                 onPress={() => marcarMural(key)}
                                                 className="flex-row items-center py-2 px-2 rounded-md active:bg-secondary/50"
                                             >
-                                                <View className={`h-5 w-5 rounded-full items-center justify-center ${getCorMateria(turma.materia)}`}>
-                                                    <Text className="text-[10px] font-bold text-white">
+                                                <View className={`h-6 w-6 rounded-full items-center justify-center ${getCorMateria(turma.materia).bg}`}>
+                                                    <Text className={`text-[12px] font-bold ${getCorMateria(turma.materia).text}`}>
                                                         {turma.materia.charAt(0).toUpperCase()}
                                                     </Text>
                                                 </View>
