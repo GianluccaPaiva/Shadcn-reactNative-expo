@@ -44,7 +44,7 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
                 </ScrollView>
             )}
             {props.usuario.acessouOq === "mural" && (
-                <View>
+                <View style={{ flex: 1, width: '100%' }}>
                     {turmaSelecionada && <Mural materia={props.usuario.chaveMural} turma={turmaSelecionada} />}
                 </View>
             )}
