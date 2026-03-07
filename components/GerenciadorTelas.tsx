@@ -23,7 +23,7 @@ export function GerenciadorTelas(props: GerenciadorTelasProps) {
                 <ScrollView className="flex-1">
                     <View className="flex-row flex-wrap justify-between p-4">
                         {listaEscolar.turmas && Object.entries(listaEscolar.turmas).map(([key, turma]) => (
-                            <View key={key} className="w-1/2 px-2 mb-4">
+                            <View key={key} className=" px-2 mb-4">
                                 <TurmaCard
                                     materia={turma.materia}
                                     banners={turma.banners}
