@@ -55,7 +55,7 @@ export function Configuracoes({ navegarPara }: ConfiguracoesProps) {
               <Switch
                 value={notificacoes}
                 onValueChange={clickarNotificacoes}
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                trackColor={{ false: "#767577", true: "#8b5cf6" }}
                 thumbColor={notificacoes ? "#ffffff" : "#f4f3f4"}
               />
             </View>
