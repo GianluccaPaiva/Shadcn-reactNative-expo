@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
 import {
   Field,
   FieldDescription,
@@ -9,7 +10,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner"
+import { Pressable, View } from "react-native";
+//import { toast } from "sonner"
 
 type AtendimentoContatoProps = {
   professorNome: string;
@@ -36,8 +38,8 @@ export function AtendimentoContato({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/50" onClick={onClose} />
-      <Card className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6">
+      <Pressable className="absolute inset-0 z-50 bg-black/50" onPress={onClose} />
+      <Card className="absolute left-4 right-4 top-24 z-50 max-w-xl self-center p-6">
         <FieldSet>
           <FieldGroup>
             <Field>
@@ -46,7 +48,6 @@ export function AtendimentoContato({
               </FieldLabel>
               <Input
                 id="assunto-contato"
-                type="text"
                 placeholder="Ex: Dúvida sobre a atividade"
                 value={assunto}
                 onChange={(e) => setAssunto(e.target.value)}
@@ -69,20 +70,19 @@ export function AtendimentoContato({
             </Field>
           </FieldGroup>
         </FieldSet>
-        <div className="flex justify-end gap-2 mt-4">
-          <Button variant="outline" onClick={onClose}>
-            Cancelar
+        <View className="mt-4 flex-row justify-end gap-2">
+          <Button variant="outline" onPress={onClose}>
+            <Text>Cancelar</Text>
           </Button>
           <Button 
-            onClick={() => {
+            onPress={() => {
               onEnviar();
-              toast.success("Mensagem enviada com sucesso!");
             }}
             disabled={!assunto.trim() || !mensagem.trim()}
           >
-            Enviar mensagem
+            <Text>Enviar mensagem</Text>
           </Button>
-        </div>
+        </View>
       </Card>
     </>
   );

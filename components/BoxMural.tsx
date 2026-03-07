@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
 import {
   Field,
   FieldDescription,
@@ -8,6 +9,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
+import { Pressable, View } from "react-native";
 
 type BoxMuralProps = {
   materia: string;
@@ -24,11 +26,11 @@ export function BoxMural({ materia, professorNome, aberto, onClose, conteudo, se
 
   return (
     <>
-      <div 
-        className="fixed inset-0 z-50 bg-black/50"
-        onClick={onClose}
+      <Pressable
+        className="absolute inset-0 z-50 bg-black/50"
+        onPress={onClose}
       />
-      <Card className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6">
+      <Card className="absolute left-4 right-4 top-24 z-50 max-w-xl self-center p-6">
         <FieldSet>
           <FieldGroup>
             <Field>
@@ -46,14 +48,14 @@ export function BoxMural({ materia, professorNome, aberto, onClose, conteudo, se
             </Field>
           </FieldGroup>
         </FieldSet>
-        <div className="flex justify-end gap-2 mt-4">
-          <Button variant="outline" onClick={onClose}>
-            Cancelar
+        <View className="mt-4 flex-row justify-end gap-2">
+          <Button variant="outline" onPress={onClose}>
+            <Text>Cancelar</Text>
           </Button>
-          <Button onClick={onPublicar} disabled={!conteudo.trim()}>
-            Publicar
+          <Button onPress={onPublicar} disabled={!conteudo.trim()}>
+            <Text>Publicar</Text>
           </Button>
-        </div>
+        </View>
       </Card>
     </>
   );

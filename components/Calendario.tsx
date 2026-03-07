@@ -1,33 +1,37 @@
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "react-native-calendars"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Text } from "@/components/ui/text"
 import { addDays } from "date-fns"
+import { CALENDAR_THEME, MARKED_DATES_THEME } from "@/lib/calendarStyle"
 
 export function Calendario() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(new Date().getFullYear(), 1, 12)
-  )
+  const [date, setDate] = React.useState<Date | undefined>(new Date())
   const [currentMonth, setCurrentMonth] = React.useState<Date>(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   )
 
-  return (
-    <Card className="w-full max-w-md mx-auto h-fit shadow-md">
+  const selectedDateString = date?.toISOString().split("T")[0]
 
+  return (
+      <Card 
+      className="w-full max-w-md mx-auto h-fit shadow-md">
       <CardContent className="p-2 flex justify-center">
         <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
-          fixedWeeks
-          className="p-2"
+          theme={CALENDAR_THEME}
+          markedDates={{
+            [selectedDateString || '']: {
+              ...MARKED_DATES_THEME
+            }
+          }}
+          current={currentMonth.toISOString().split("T")[0]}
+          onDayPress={(day) => setDate(new Date(day.timestamp))}
+          onMonthChange={(month) => setCurrentMonth(new Date(month.timestamp))}
         />
       </CardContent>
 
-      <CardFooter className="flex flex-wrap gap-2 border-t p-4">
+      <CardFooter className="flex flex-wrap gap-2 p-4">
         {[
           { label: "Hoje", value: 0 },
           { label: "Amanhã", value: 1 },
@@ -48,7 +52,7 @@ export function Calendario() {
               )
             }}
           >
-            {preset.label}
+            <Text>{preset.label}</Text>
           </Button>
         ))}
       </CardFooter>

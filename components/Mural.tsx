@@ -1,23 +1,19 @@
-import type { TurmaProps } from "@/hooks/leituraJson";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { BoxMural } from "./BoxMural";
-import { Plus } from "lucide-react";
-import { useMural } from "@/hooks/useMural";
-import { AtendimentoContato } from "./AtendimentoContato";
-import { AlunosTurma } from "./AlunosTurma";
+import type { TurmaProps } from "@/hooks/leituraJson"
+import { Button } from "@/components/ui/button"
+import { Text } from "@/components/ui/text"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Plus } from "lucide-react-native"
+import { Image, View } from "react-native"
+
+import { useMural } from "@/hooks/useMural"
+import { BoxMural } from "./BoxMural"
+import { AtendimentoContato } from "./AtendimentoContato"
+import { AlunosTurma } from "components/AlunosTurma"
 
 type MuralProps = {
-  materia: string;
-  turma: TurmaProps;
-};
+  materia: string
+  turma: TurmaProps
+}
 
 export function Mural({ materia, turma }: MuralProps) {
   const {
@@ -34,96 +30,134 @@ export function Mural({ materia, turma }: MuralProps) {
     abrirContato,
     abrirMensagemContato,
     abrirAlunos,
-  } = useMural();
+  } = useMural()
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-1 min-h-screen pb-16">
-      <Card className="relative w-full overflow-hidden h-67">
-        <img
-          src={turma.banners}
-          alt={`Banner da turma ${materia}`}
-          className="absolute inset-0 h-full w-full object-cover"
+    <View className="mx-auto min-h-screen w-full max-w-3xl space-y-1 pb-16">
+      <Card className="relative h-80 w-full overflow-hidden">
+        <Image
+          source={{ uri: turma.banners }}
+          accessibilityLabel={`Banner da turma ${materia}`}
+          className="absolute inset-0 h-full w-full"
+          resizeMode="cover"
         />
-        <div className="absolute inset-0 bg-black/50" />
-        <CardHeader className="relative z-10 flex flex-col h-full justify-between">
-          <div>
+        <View className="absolute inset-0 bg-black/50" />
+
+        <CardHeader className="relative z-10 flex h-full flex-col justify-between">
+          <View>
             <CardTitle className="text-3xl text-white">{turma.materia}</CardTitle>
             <CardDescription className="text-white/90">
               Professor: {turma.professor} | Sala: {turma.sala}
             </CardDescription>
-          </div>
-          <CardAction className="self-end">
-            <div className="flex flex-col items-end gap-2">
-              <img
-                src={turma.foto_professor}
-                alt={`Foto do professor ${turma.professor}`}
-                className="h-20 w-20 rounded-full object-cover"
-              />
-              <ButtonGroup>
-                <Button onClick={() => abrirMural()} className="text-white" variant="link" size="sm">
-                  Mural
-                </Button>
-                <Button onClick={() => abrirAtividades()} className="text-white" variant="link" size="sm">
-                  Atividades
-                </Button>
-                <Button onClick={() => abrirContato()} className="text-white" variant="link" size="sm">
-                  Entrar em contato
-                </Button>
-                <Button onClick={() => abrirAlunos()} className="text-white" variant="link" size="sm">
-                  Alunos
-                </Button>
-              </ButtonGroup>
-            </div>
-          </CardAction>
+          </View>
+
+          <View className="flex flex-col items-end gap-1">
+            <Image
+              source={{ uri: turma.foto_professor }}
+              accessibilityLabel={`Foto do professor ${turma.professor}`}
+              className="h-16 w-16 rounded-full"
+              resizeMode="cover"
+            />
+
+            <Button
+              onPress={abrirMural}
+              className="min-w-[120px] justify-end px-0 text-white"
+              variant="link"
+              size="sm"
+            >
+              <Text>Mural</Text>
+            </Button>
+            <Button
+              onPress={abrirAtividades}
+              className="min-w-[120px] justify-end px-0 text-white"
+              variant="link"
+              size="sm"
+            >
+              <Text>Atividades</Text>
+            </Button>
+            <Button
+              onPress={abrirContato}
+              className="min-w-[120px] justify-end px-0 text-white"
+              variant="link"
+              size="sm"
+            >
+              <Text>Entrar em contato</Text>
+            </Button>
+            <Button
+              onPress={abrirAlunos}
+              className="min-w-[120px] justify-end px-0 text-white"
+              variant="link"
+              size="sm"
+            >
+              <Text>Alunos</Text>
+            </Button>
+          </View>
         </CardHeader>
       </Card>
 
-      <Button className=" w-fit" onClick={() => mudarAberturaBox(true)}>
-        <Plus />Postar no mural
+      <Button
+        className="w-fit"
+        onPress={() => {
+          abrirMural()
+          mudarAberturaBox(true)
+        }}
+      >
+        <Plus className="h-4 w-4" />
+        <Text>Postar no mural</Text>
       </Button>
 
       <BoxMural
         materia={materia}
         professorNome={turma.professor}
-        aberto={posts.boxAberto}
+        aberto={posts.boxAberto && posts.tipoAmostar === "mural"}
         onClose={handleCancelar}
         conteudo={conteudo}
         setConteudo={setConteudo}
         onPublicar={handlePublicar}
       />
 
-      <div className="mt-4 space-y-4">
+      <View className="mt-4 space-y-4">
         {posts.tipoAmostar === "mural" ? (
           posts.posts.length > 0 ? (
             posts.posts.map((post) => (
               <Card key={post.id} className="p-4">
-                <p className="mb-2 text-sm text-muted-foreground">{post.data}</p>
-                <p className="whitespace-pre-wrap">{post.conteudo}</p>
+                <Text className="mb-2 text-sm text-muted-foreground">{post.data}</Text>
+                <Text>{post.conteudo}</Text>
               </Card>
             ))
           ) : (
             <Card className="overflow-hidden p-4">
-              <div className="flex gap-1 items-center justify-center">
-                <img src="https://cdn.pixabay.com/photo/2016/10/28/16/56/list-1778593_1280.png" alt="Não encontrado imagem" className="h-40 w-40 object-cover rounded" />
-                <p className="text-muted-foreground">
-                  Nenhum post ainda.
-                </p>
-              </div>
+              <View className="flex items-center justify-center gap-1">
+                <Image
+                  source={{
+                    uri: "https://cdn.pixabay.com/photo/2016/10/28/16/56/list-1778593_1280.png",
+                  }}
+                  accessibilityLabel="Sem posts"
+                  className="h-40 w-40 rounded"
+                  resizeMode="cover"
+                />
+                <Text className="text-muted-foreground">Nenhum post ainda.</Text>
+              </View>
             </Card>
           )
         ) : posts.tipoAmostar === "atividade" ? (
           <Card className="overflow-hidden p-4">
-            <div className="flex gap-1 items-center justify-center">
-              <img src="https://cdn.pixabay.com/photo/2016/10/28/16/56/list-1778593_1280.png" alt="Não encontrado imagem" className="h-40 w-40 object-cover rounded" />
-              <p className="text-muted-foreground">
-                Nenhuma atividade ainda.
-              </p>
-            </div>
+            <View className="flex items-center justify-center gap-1">
+              <Image
+                source={{
+                  uri: "https://cdn.pixabay.com/photo/2016/10/28/16/56/list-1778593_1280.png",
+                }}
+                accessibilityLabel="Sem atividades"
+                className="h-40 w-40 rounded"
+                resizeMode="cover"
+              />
+              <Text className="text-muted-foreground">Nenhuma atividade ainda.</Text>
+            </View>
           </Card>
         ) : (
           <AtendimentoContato
             professorNome={turma.professor}
-            aberto={posts.boxAberto}
+            aberto={posts.boxAberto && posts.tipoAmostar === "contato"}
             onClose={handleCancelar}
             assunto={assunto}
             setAssunto={setAssunto}
@@ -132,10 +166,9 @@ export function Mural({ materia, turma }: MuralProps) {
             onEnviar={abrirMensagemContato}
           />
         )}
-        {posts.tipoAmostar === "alunos" && (
-          <AlunosTurma turma={turma} />
-        )}
-      </div>
-    </div>
-  );
+
+        {posts.tipoAmostar === "alunos" && <AlunosTurma turma={turma} />}
+      </View>
+    </View>
+  )
 }
