@@ -197,6 +197,3 @@ Esses materiais mostram o passo a passo de configuração e reforçam os conceit
 - Expo (oficial): https://expo.dev/
 - Expo (oficial): https://expo.dev/
 
----
-
-Se quiser, no próximo passo eu também posso montar uma seção de "primeiros exercícios" dentro do README para você praticar (ex.: criar nova tela, novo componente UI e novo hook) sem quebrar a estrutura atual do projeto.
